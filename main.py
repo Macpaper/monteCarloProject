@@ -6,12 +6,11 @@ import math
 #     print(random.uniform(0, 1))
 # F(x) = u
 # x = F^-1(u)
-# u = 1 - e^(-12x)
-# e^(-12x) = 1 - u
-# -12x = ln(1-u)
-# x = -ln(1-u)/12
-# x_i = -ln(1-u_i) / 12
-
+# u = 1 - e^(-1/12x)
+# e^(-1/12x) = 1 - u
+# -1/12x = ln(1-u)
+# x = -ln(1-u)*12
+# x_i = -ln(1-u_i) * 12
 
 def generateNthRandNum(n):
     x = 1000 # 'seed'
@@ -29,7 +28,6 @@ def generateNthRandNum(n):
 # x_i = minimum x for which F(x) >= u_i
 # you can find this value by sequentially searching 
 # over x = 1...k until F(x) >= u_i for the first time
-
 
 
 print(generateNthRandNum(1))
@@ -51,8 +49,9 @@ def sumX():
     sum = 0
     for i in range(1, 6):
         sum += generateNthRandNum(i)
+    return sum
          
-math.min(sumX(), generateNthRandNum(5))
+min(sumX(), generateNthRandNum(5))
 def callCustomer():
     # W = random variable. # of seconds spent calling customer
     w = TIME_TO_PICK_UP_PHONE
@@ -79,7 +78,11 @@ def exponentialCDFatX(lam, x):
     return cdfAtX
 
 def customerIsAvailable(i): 
-    x = -math.log(1-generateNthRandNum(i)) / 12
+    x = -math.log(1-generateNthRandNum(i)) * 12
+    math.log(127891)
+    math.log(15)
+    math.log(4)
+    math.log(98)
     print(x)
     return x
 # for i in range(10):
