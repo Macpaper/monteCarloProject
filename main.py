@@ -58,16 +58,17 @@ def callCustomer(i):
         calls += 1
         iter += 1
         w += TIME_TO_PICK_UP_PHONE
-        callProbability = generateNthRandNum(i + iter)
+        callProbability = generateNthRandNum(i + iter) # (0, 1)
         # print(i + iter)
         if callProbability <= 0.2:
             w += TIME_TO_GET_BUSY_SIGNAL
-        elif callProbability > 0.2 and callProbability <= 0.5:
+        elif callProbability <= 0.5 and callProbability > 0.2:
             w += TIME_TO_HEAR_5_RINGS
-        else:
+
+        else: # callProbability (0.5, 1.0)
             # customer is AVAILABLE
-            timeToAnswer = customerIsAvailable(callProbability)
-            if timeToAnswer > 25:
+            timeToAnswer = customerIsAvailable(u_list[i+iter+2000])
+            if timeToAnswer >= 25:
                 w += TIME_TO_HEAR_5_RINGS
             else:
                 w += timeToAnswer
@@ -96,6 +97,8 @@ moreThan60 = 0
 moreThan80 = 0
 moreThan120 = 0
 for num in w_list:
+    if num <= 6:
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA WHY")
     if num <= 15:
         lessThan15 += 1
     if num <= 20:
@@ -146,7 +149,7 @@ for n in sorted(list(set(w_list))):
         print(n)
 # plt.bar(list(vals), freq, width=0.1)
 plt.xlim(5, 129)
-plt.bar(sorted(list(set(w_list))), np.arange(1, 420), width=0.5)
+plt.bar(sorted(list(set(w_list))), np.arange(1, len(set(w_list))+1), width=0.5)
 
 plt.show()
 # SOME NOTES:
