@@ -1,5 +1,6 @@
 import math
-
+import matplotlib.pyplot as plt
+import numpy as np
 # Finding the inverse CDF of exponential random variable X with lambda = 1/12, E(X) = 12
 # F(x) = u
 # x = F^-1(u)
@@ -21,10 +22,10 @@ def generateNthRandNum(n):
         u = x / K
     return u
 
-def customerIsAvailable(i): 
-    x = -math.log(1-generateNthRandNum(i)) * 12
+def customerIsAvailable(ui): 
+    x = -12 * math.log(1-ui)
     return x
-
+    
 # Generate a list of random variables from (0, 1) using random number generator.
 u_list = []
 for i in range(1, 10002):
@@ -50,37 +51,104 @@ lam = 1/mean
 # Generates a call for a single customer
 def callCustomer(i):
     # w is number of seconds spent calling customer i
-    w = TIME_TO_PICK_UP_PHONE
-    timesCalled = 0
+    w = 0
+    calls = 0
     iter = 0
-    while timesCalled < 4:
-        timesCalled += 1
+    while calls < 4:
+        calls += 1
+        iter += 1
+        w += TIME_TO_PICK_UP_PHONE
         callProbability = generateNthRandNum(i + iter)
+        # print(i + iter)
         if callProbability <= 0.2:
             w += TIME_TO_GET_BUSY_SIGNAL
-        elif callProbability <= 0.5:
+        elif callProbability > 0.2 and callProbability <= 0.5:
             w += TIME_TO_HEAR_5_RINGS
         else:
             # customer is AVAILABLE
-            timeToAnswer = customerIsAvailable(i + iter)
+            timeToAnswer = customerIsAvailable(callProbability)
             if timeToAnswer > 25:
                 w += TIME_TO_HEAR_5_RINGS
             else:
                 w += timeToAnswer
                 break
-        iter += 1
-    w += TIME_TO_END_CALL
+        w += TIME_TO_END_CALL
+
     return w
 
 w_list = []
-for w in range(1, 501):
+f = open("out.txt", "a")
+for w in range(1, 2001, 4):
     val = callCustomer(w)
+    f.write(str(val) + "\n")
     w_list.append(val)
-    if val > 107:
+    if val > 128:
         print("OH NO SOMETHING WENT HORRIBLY WRONG")
+f.close()
 print(w_list)
 
+lessThan15 = 0
+lessThan20 = 0
+lessThan30 = 0
+lessThan128 = 0
+moreThan40 = 0
+moreThan60 = 0
+moreThan80 = 0
+moreThan120 = 0
+for num in w_list:
+    if num <= 15:
+        lessThan15 += 1
+    if num <= 20:
+        lessThan20 += 1
+    if num <= 30:
+        lessThan30 += 1
+    if num <= 128:
+        lessThan128 += 1
+    if num > 40:
+        moreThan40 += 1
+    if num > 60:
+        moreThan60 += 1
+    if num > 80:
+        moreThan80 += 1
+    if num > 120:
+        moreThan120 += 1
+        print("big: " + str(num))
 
+ratio =  lessThan15 / len(w_list) 
+print("prob less than 15: " + str(ratio))
+
+ratio =  lessThan20 / len(w_list) 
+print("prob less than 20: " + str(ratio))
+
+ratio =  lessThan30 / len(w_list) 
+print("prob less than 30: " + str(ratio))
+
+ratio =  lessThan128 / len(w_list) 
+print("prob less than 128: " + str(ratio))
+
+ratio =  moreThan40 / len(w_list) 
+print("prob more than 40: " + str(ratio))
+
+ratio =  moreThan60 / len(w_list) 
+print("prob more than 60: " + str(ratio))
+
+ratio =  moreThan80 / len(w_list) 
+print("prob more than 80: " + str(ratio))
+
+ratio =  moreThan120 / len(w_list) 
+print("prob more than 120: " + str(ratio))
+w_list = sorted(w_list)
+
+vals = set(w_list)
+freq = np.arange(1, len(vals)+1)
+for n in sorted(list(set(w_list))):
+    if n > 120:
+        print(n)
+# plt.bar(list(vals), freq, width=0.1)
+plt.xlim(5, 129)
+plt.bar(sorted(list(set(w_list))), np.arange(1, 420), width=0.5)
+
+plt.show()
 # SOME NOTES:
 # There are a lot of repeating values of W. Consider this:
 # There is a probability that the customer is ALWAYS busy. This is 6 + 3*4 + 1 = 19
