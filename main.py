@@ -118,7 +118,7 @@ for num in w_list:
         print("big: " + str(num))
 
 ratio =  lessThan15 / len(w_list) 
-print("prob less than 15: " + str(ratio))
+print("prob less than 15: " + str(ratio)) 
 
 ratio =  lessThan20 / len(w_list) 
 print("prob less than 20: " + str(ratio))
@@ -149,7 +149,10 @@ for n in sorted(list(set(w_list))):
         print(n)
 # plt.bar(list(vals), freq, width=0.1)
 plt.xlim(5, 129)
-plt.bar(sorted(list(set(w_list))), np.arange(1, len(set(w_list))+1), width=0.5)
+plt.plot(sorted(list(set(w_list))), np.arange(0, 1, 1/len(set(w_list))))
+plt.xlabel("Total Seconds Spent Calling Customer")
+plt.ylabel("Probability")
+plt.title("CDF of W")
 
 plt.show()
 # SOME NOTES:
