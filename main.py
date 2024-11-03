@@ -88,6 +88,7 @@ for w in range(1, 2001, 4):
 f.close()
 print(w_list)
 
+
 lessThan15 = 0
 lessThan20 = 0
 lessThan30 = 0
@@ -141,6 +142,34 @@ print("prob more than 80: " + str(ratio))
 ratio =  moreThan120 / len(w_list) 
 print("prob more than 120: " + str(ratio))
 w_list = sorted(w_list)
+#calc of mean, q1, median, and q3
+meanOfW = np.mean(w_list)
+
+quartiles = np.percentile(w_list, [25, 50, 75])
+q1, median, q3 = quartiles
+
+
+lessThan15 = np.sum(np.array(w_list) <= 15) / len(w_list)
+lessThan20 = np.sum(np.array(w_list) <= 20) / len(w_list)
+lessThan30 = np.sum(np.array(w_list) <= 30) / len(w_list)
+moreThan40 = np.sum(np.array(w_list) > 40) / len(w_list)
+
+w5, w6, w7 = 75, 100, 125
+greaterThanW5 = np.sum(np.array(w_list) > w5) / len(w_list)
+greaterThanW6 = np.sum(np.array(w_list) > w6) / len(w_list)
+greaterThanW7 = np.sum(np.array(w_list) > w7) / len(w_list)
+
+print(f"MeanOfW: {meanOfW}")
+print(f"Q1: {q1}")
+print(f"Median: {median}")
+print(f"Q3: {q3}")
+print(f"P[W] <= 15: {lessThan15}")
+print(f"P[W] <= 20: {lessThan20}")
+print(f"P[W] <= 30: {lessThan30}")
+print(f"P[W] > 40: {moreThan40}")
+print(f"P[W] > w5 (75): {greaterThanW5}")
+print(f"P[W] > w6 (100): {greaterThanW6}")
+print(f"P[W] > w7 (125): {greaterThanW7}")
 
 vals = set(w_list)
 freq = np.arange(1, len(vals)+1)
@@ -150,6 +179,8 @@ for n in sorted(list(set(w_list))):
 # plt.bar(list(vals), freq, width=0.1)
 plt.xlim(5, 129)
 plt.bar(sorted(list(set(w_list))), np.arange(1, len(set(w_list))+1), width=0.5)
+
+
 
 plt.show()
 # SOME NOTES:
